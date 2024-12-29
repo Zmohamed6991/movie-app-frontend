@@ -1,33 +1,56 @@
-import Homepage from "./components/Homepage";
+import { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 function App() {
+
+  const [jwt, setJwt] = useState("")
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertClassName, setAlertClassName] = useState("d-none");
+
   return (
     <div className="container">
       <div className="row">
         <div className="col">
-          <h1 className="mt-3">Movflix - Your Movie App</h1>
+          <h1 className="mt-5">Movflix - Your Movie App</h1>
         </div>
         <div className="col text-end">
-          <a href="#!"><span className="badge bg-success">Login</span></a>
+          {jwt === ""
+            ? <Link to="/Login"><span className="badge bg-success">Login</span></Link>
+            : <a href="#!" className="badge bg-danger">Logout</a>
+          }
         </div>
+      <hr className="mb-3"></hr>
       </div>
 
-      <div className="row">
+      <div className="">
         <div className="col-md-2">
           <nav>
             <div className="list-group">
-              <a href="#!" className="list-group-item list-group-item-action">Home</a>
-              <a href="#!" className="list-group-item list-group-item-action">Movies</a>
-              <a href="#!" className="list-group-item list-group-item-action">Genres</a>
-              <a href="#!" className="list-group-item list-group-item-action">Add a movie</a>
-              <a href="#!" className="list-group-item list-group-item-action">Manage Movie List</a>
-              <a href="#!" className="list-group-item list-group-item-action">GraphQL</a>
+              <Link to="/" className="list-group-item list-group-item-action">Home</Link>
+              <Link to="/movies" className="list-group-item list-group-item-action">Movies</Link>
+              <Link to="/genres" className="list-group-item list-group-item-action">Genres</Link>
+
+              {jwt !== "" &&
+              <>
+              <Link to="/admin/movie/0" className="list-group-item list-group-item-action">Add a movie</Link>
+              <Link to="/admin" className="list-group-item list-group-item-action">Manage Movie List</Link>
+              <Link to="/graphql" className="list-group-item list-group-item-action">GraphQL</Link>
+              </>
+              }
             </div>
           </nav>
         </div>
       </div>
       <div className="col-md-10">
-        <Homepage />
+        <Alert 
+        message={alertMessage}
+        className={alertClassName}
+        />
+        <Outlet context ={{
+          jwt, setJwt,
+          alertMessage, setAlertMessage,
+          alertClassName, setAlertClassName,
+        }}/>
       </div>
     </div>
   );
