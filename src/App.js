@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
+import { Alert } from "react-router-dom";
 
 function App() {
 
   const [jwt, setJwt] = useState("")
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("d-none");
+
+  const logOut = () => {
+    setJwt("");
+    Navigate("/login");
+  }
 
   return (
     <div className="container">
@@ -42,14 +48,12 @@ function App() {
         </div>
       </div>
       <div className="col-md-10">
-        <Alert 
-        message={alertMessage}
-        className={alertClassName}
+        <Alert className={alertClassName} message={alertMessage}
         />
         <Outlet context ={{
           jwt, setJwt,
-          alertMessage, setAlertMessage,
-          alertClassName, setAlertClassName,
+          setAlertMessage,
+          setAlertClassName,
         }}/>
       </div>
     </div>

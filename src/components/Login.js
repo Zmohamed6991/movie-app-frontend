@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Input from "./form/input";
-import { useOutletContext } from "react-router-dom";
+import { Navigate, useOutletContext } from "react-router-dom";
 
 
 const Login = () => {
@@ -18,6 +18,12 @@ const Login = () => {
 
     if (email === "admin@example.com") {
         setJwt("admin");
+        setAlertClassName("alert-success");
+        setAlertMessage("Successfully logged in");
+        Navigate("/");
+    } else {
+        setAlertClassName("alert-danger");
+        setAlertMessage("Invalid email or password");
     }
 
     return(
